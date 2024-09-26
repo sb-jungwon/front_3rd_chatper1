@@ -1,4 +1,3 @@
-import { BaseComponent } from '../shared/ui/BaseComponent';
 import { isLoggedIn, login } from '../shared/util/auth';
 import { router } from '../shared/util/Router';
 
@@ -7,7 +6,31 @@ const ID = {
   USER_NAME: 'username',
 };
 
-export default class LoginPage extends BaseComponent {
+export default class LoginPage {
+  protected $root: Element | null;
+
+  constructor(selector: string) {
+    this.$root = this.getRootElement(selector);
+    if (this.$root) this.render();
+  }
+
+  private getRootElement(selector: string): Element | null {
+    const $root = document.querySelector(selector);
+    if (!$root) {
+      console.error(
+        `Selector "${selector}"에 해당하는 요소를 찾을 수 없습니다.`
+      );
+    }
+    return $root;
+  }
+
+  render() {
+    if (!this.$root) return;
+
+    this.$root.innerHTML = this.template();
+    this.afterRender();
+  }
+
   afterRender() {
     this.checkAccess();
     this.bindLoginEvent();
@@ -33,6 +56,16 @@ export default class LoginPage extends BaseComponent {
     const username = $nameInput.value.trim();
 
     login({ name: username });
+  }
+
+  protected getElement<T extends HTMLElement>(selector: string) {
+    const $element = this.$root?.querySelector(selector) as T | undefined;
+    if (!$element) {
+      console.error(
+        `Selector "${selector}"에 해당하는 요소를 찾을 수 없습니다.`
+      );
+    }
+    return $element;
   }
 
   template() {
