@@ -1,7 +1,7 @@
 /** @jsx createVNode */
 import { createVNode } from '../lib';
 import { Header, Footer, Navigation } from '../components/templates';
-import { NotFoundPage, ProfilePage } from '.';
+import { NotFoundPage } from '.';
 import { globalStore } from '../stores';
 import { Post } from '../components/posts/Post';
 
